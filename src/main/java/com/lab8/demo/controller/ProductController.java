@@ -1,15 +1,22 @@
 package com.lab8.demo.controller;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import com.lab8.demo.model.*;
-import com.lab8.demo.service.ProductService;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lab8.demo.model.Product;
+import com.lab8.demo.model.ProductDetail;
+import com.lab8.demo.model.Review;
+import com.lab8.demo.service.ProductService;
 
 @Controller
 @RequestMapping("/products")
@@ -64,15 +71,12 @@ public class ProductController {
         return "products/delete";
     }
 
-    // POST /products/delete/{id} — actually delete
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/products";
     }
 
-    // POST /products/{id}/reviews — small extra endpoint so the 1:N side
-    // is actually exercised end-to-end from the edit page, not just displayed
     @PostMapping("/{id}/reviews")
     public String addReview(@PathVariable Long id,@RequestParam String reviewer,@RequestParam Integer rating,@RequestParam(required = false) String comment) {
         Review review = new Review();
