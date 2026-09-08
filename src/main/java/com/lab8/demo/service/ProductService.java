@@ -1,13 +1,15 @@
 package com.lab8.demo.service;
 
-import com.lab8.demo.model.*;
-import com.lab8.demo.repository.*;
-import com.lab8.demo.strategy.*;
-
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.lab8.demo.model.Product;
+import com.lab8.demo.model.Review;
+import com.lab8.demo.repository.ProductRepository;
+import com.lab8.demo.repository.ReviewRepository;
+import com.lab8.demo.strategy.DiscountContext;
 
 @Service
 public class ProductService {
@@ -76,6 +78,9 @@ public class ProductService {
 
     //strategy
     public double getDiscountedPrice(Product product){
+        if (product.getPrice() == null) {
+            return 0.0;
+        }
         return discountContext.calculatePrice(product.getPrice(), product.getDiscountType());
     }
 }

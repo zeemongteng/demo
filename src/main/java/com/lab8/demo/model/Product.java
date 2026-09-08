@@ -3,7 +3,17 @@ package com.lab8.demo.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "products")
@@ -127,4 +137,13 @@ public class Product {
         }
         return reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
     }
+
+    @Transient //ai generateed css
+    public double getDiscountedPrice() {
+    return switch (discountType == null ? "" : discountType.toUpperCase()) {
+        case "MEMBER" -> price * 0.90;
+        case "SEASONAL" -> price * 0.80;
+        default -> price;
+    };
+}
 }
